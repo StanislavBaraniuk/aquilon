@@ -6,19 +6,22 @@
  * Time: 15:04
  */
 
-class SQL
+class SQL extends DB
 {
-    static public function findTable ($params = []) {
+//    static private $db;
 
+    function __construct()
+    {
+        $this->db = new DB();
     }
 
-    static public function INSERT($params = [], $table_name = null, $additional = '') {
-//        $properties = UtovA::run(["params" => [], "table_name" => null, "additional"], $properties, 1);
+    static public function INSERT($params = [], $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '') {
+//        $properties = UtovA::run(["params" => [], "table_name" => null, "additional"], UTOV_LOGGER_MODE);
 
         if ($table_name !== null)
             $sql = "INSERT INTO $table_name (";
         else
-            $sql = "INSERT INTO ".self::findTable($params)."  (";
+            $sql = "INSERT INTO ".(new self)->findTable($params)[$DEFAULT_TF_INDEX]."  (";
 
         $count = 1;
 
@@ -48,11 +51,11 @@ class SQL
 
     }
 
-    static public function UPDATE($params = [], $condition = [], $table_name = null, $additional = '') {
+    static public function UPDATE($params = [], $condition = [],  $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '') {
         if ($table_name !== null)
             $sql = "UPDATE $table_name SET ";
         else
-            $sql = "UPDATE ".self::findTable($params)." SET ";
+            $sql = "UPDATE ".(new self)->findTable($params)[$DEFAULT_TF_INDEX]." SET ";
 
         $count = 1;
 
@@ -84,11 +87,11 @@ class SQL
 
     }
 
-    static public function DELETE($params = [], $table_name = null, $additional = '') {
+    static public function DELETE($params = [],  $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '') {
         if ($table_name !== null)
             $sql = "DELETE FROM $table_name WHERE ";
         else
-            $sql = "DELETE FROM ".self::findTable($params)." WHERE ";
+            $sql = "DELETE FROM ".(new self)->findTable($params)[$DEFAULT_TF_INDEX]." WHERE ";
 
         $count = 1;
 
@@ -107,13 +110,12 @@ class SQL
         return $sql;
     }
 
-    static public function SELECT($select = [], $params = [], $table_name = null, $additional = '')
+    static public function SELECT($select = [], $params = [], $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '')
     {
-
         if ($table_name !== null)
             $sql = "SELECT * FROM $table_name WHERE ";
         else
-            $sql = "SELECT * FROM ".self::findTable($params)." WHERE ";
+            $sql = "SELECT * FROM ".(new self)->findTable($params)[$DEFAULT_TF_INDEX]." WHERE ";
 
         $count = 1;
 

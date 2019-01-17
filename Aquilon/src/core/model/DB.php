@@ -59,4 +59,40 @@ class DB
         }
     }
 
+    protected function findTable ($params = []) {
+        $database_tables = $this->getTables();
+        $is_find = true;
+        $table = [];
+
+        for ($i=0; $i < count($database_tables); $i++) {
+            $columns = $this->getColumns($database_tables[$i]['Tables_in_'.DB_NAME]);
+
+            if (count($params) > count($columns)) {
+                continue;
+            }
+
+            for ($l=0; $l < count($columns); $l++) {
+                $is_find = isset($params[$columns[$l]['Field']]);
+                if (!$is_find) {
+                    break;
+                }
+            }
+
+            if ($is_find) {
+                array_push($table, $database_tables[$i]['Tables_in_'.DB_NAME]);
+            }
+        }
+
+        return $table;
+    }
+
+    private function getTables () {
+        return $this->query("SHOW TABLES;");
+    }
+
+    private function getColumns ($table_name) {
+        return $this->query("SHOW COLUMNS FROM ".$table_name.';');
+
+    }
+
 }

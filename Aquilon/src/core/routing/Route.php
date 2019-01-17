@@ -21,9 +21,11 @@ class Route
     public static function getBasePath()
     {
         $base_path = substr(ROOT, strlen($_SERVER['DOCUMENT_ROOT']));
+
         if (DS !== '/') {
-            $base_path = str_replace(DS,'/', $base_path);
+            $base_path = str_replace(DS,DS, $base_path);
         }
+
         return $base_path;
 
     }
@@ -73,9 +75,14 @@ class Route
 
      public static function createInputParams ($params) {
         $return_array = [];
-        foreach (explode("&&", $params) as $value) {
-            $data = explode("=", $value);
-            $return_array[$data[0]] = $data[1];
+        $params_array =  explode("&&", $params);
+        if (count($params_array) > 1) {
+            foreach (explode("&&", $params) as $value) {
+                $data = explode("=", $value);
+                $return_array[$data[0]] = $data[1];
+            }
+        } else {
+            return $params_array;
         }
 
         return $return_array;

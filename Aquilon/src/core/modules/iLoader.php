@@ -18,7 +18,7 @@ class iLoader
         if (count($ffs) < 1) return false;
 
         foreach($ffs as $ff){
-            $filePath = $dir.'/'.$ff;
+            $filePath = $dir.DS.$ff;
             $fileName = explode(".",$ff);
 //            echo $ff.($fileName[0] == $class_name ? "1"."<br>" : "2"."<br>");
             if ($fileName[1] == "php" && $fileName[0] == $class_name && strpos(file_get_contents($filePath), "class ".$fileName[0])) {
