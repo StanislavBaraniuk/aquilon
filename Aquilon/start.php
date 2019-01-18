@@ -1,5 +1,5 @@
 <?php
 
-require_once 'Aquilon/includes.php';
+require_once 'includes.php';
 
 Aquilon::start();

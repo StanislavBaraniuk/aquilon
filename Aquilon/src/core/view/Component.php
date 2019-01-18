@@ -48,10 +48,10 @@ class Component
         if (count($ffs) < 1) return false;
 
         foreach($ffs as $ff){
-            $filePath = $dir.'/'.$ff;
+            $filePath = $dir.DS.$ff;
             $fileName = explode(".",$ff);
 
-            if ($fileName[0] == $component."CMP" && $fileName[1] == "php") {
+            if ($fileName[0] == $component.COMPONENT && $fileName[1] == PHP_FILE_EXTENSION) {
                 if (!self::checkExistingOfComponent($component, $filePath)) {
                     require $filePath;
                     self::$get[$component] = new Component(["name" => $component, "path" => $filePath]);

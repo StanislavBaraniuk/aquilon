@@ -21,7 +21,7 @@ class iLoader
             $filePath = $dir.DS.$ff;
             $fileName = explode(".",$ff);
 //            echo $ff.($fileName[0] == $class_name ? "1"."<br>" : "2"."<br>");
-            if ($fileName[1] == "php" && $fileName[0] == $class_name && strpos(file_get_contents($filePath), "class ".$fileName[0])) {
+            if ($fileName[1] == PHP_FILE_EXTENSION && $fileName[0] == $class_name && strpos(file_get_contents($filePath), "class ".$fileName[0])) {
 //                echo "<br>".$filePath."<br><br>";
                 require_once $filePath;
                 return true;
@@ -38,4 +38,9 @@ class iLoader
             self::classFinder(ROOT, $class_name);
         }
     }
+
+    static function filtersFinder() {
+
+    }
+
 }

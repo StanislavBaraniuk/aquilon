@@ -25,7 +25,6 @@ class DB
             );
             try {
                 self::$pdo = new PDO($dsn, DB_USERNAME , DB_PASSWORD, $options);
-                print_r(self::$pdo);
             } catch (PDOException $e) {
                 echo "Connection failed: ".$e->getMessage();
                 exit();
