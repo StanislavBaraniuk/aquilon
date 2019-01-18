@@ -8,6 +8,7 @@ define("DEFAULT_404", 'unf');
 define("COMPONENT", 'CMP');
 define("PHP_FILE_EXTENSION", 'php');
 define("FILTER", "FTR");
+define("DEFAULT_ACCESS_RULE", "def");
 
 define('MYSQL_HOST','127.0.0.1');
 define('MYSQL_PORT',3306);

@@ -8,13 +8,13 @@
 
 class Access
 {
-    static $filters = [];
+    static private $filters = [];
 
-    static function _USE_ () {
+    static public function _USE_ () {
 
     }
 
-    static function _RUN_ ($filters) {
+    static public function _RUN_ ($filters) {
         if (is_array($filters)) {
             foreach ($filters as $filter) {
                 self::load(ROOT, $filter);
@@ -40,7 +40,7 @@ class Access
             if ($is_exit) exit(0);
 
         } else {
-            trigger_error("Filters not found", E_COMPILE_WARNING);
+            trigger_error("Filters not found", E_USER_WARNING);
         }
 
 
