@@ -24,20 +24,17 @@ class Access
         }
 
         if (count(self::$filters) > 0) {
-            $is_exit = false;
             foreach ($filters as $filter) {
                 if (isset(self::$filters[$filter])) {
                     $filter_req = require self::$filters[$filter];
                     if (!$filter_req[0]) {
                         echo $filter_req[1];
-                        $is_exit = true;
+                        exit(0);
                     }
                 } else {
                     trigger_error("Filter `$filter` undefined", E_USER_WARNING);
                 }
             }
-
-            if ($is_exit) exit(0);
 
         } else {
             trigger_error("Filters not found", E_USER_WARNING);

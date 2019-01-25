@@ -35,18 +35,18 @@ class Route
      */
     protected static function getRoute($uri)
     {
-         $route = substr($uri, strlen(self::getBasePath()));
-         $route_array = explode('/', $route);
+        $route = substr($uri, strlen(self::getBasePath()));
+        $route_array = explode('/', $route);
 
-         if ($route_array[0] === "") {
-              array_shift($route_array);
-         }
-         if (isset($route_array[0]) && $route_array[0] === 'index.php') {
-              array_shift($route_array);
-         }
+        if ($route_array[0] === "") {
+            array_shift($route_array);
+        }
+        if (isset($route_array[0]) && $route_array[0] === 'index.php') {
+            array_shift($route_array);
+        }
 
-         self::$controller = !empty($route_array[0]) ? $route_array[0] : HOME_CONTROLLER;
-         self::$action = !empty($route_array[1]) ? $route_array[1] : DEFAULT_ACTION;
+        self::$controller = !empty($route_array[0]) ? $route_array[0] : HOME_CONTROLLER;
+        self::$action = !empty($route_array[1]) ? $route_array[1] : DEFAULT_ACTION;
     }
 
     /**
@@ -54,39 +54,56 @@ class Route
      */
     public static function Start()
     {
+        $route = self::cutRoute();
+
+        self::getRoute($route["URI"]);
+
+        $name = ucfirst(self::$controller).'Controller';
+
+        $controller_name = class_exists($name) ? $name  : ucfirst(DEFAULT_404) . 'Controller';
+        $action_name = self::$action . 'Action';
+
+        $controller = new $controller_name();
+
+        if (!method_exists($controller, self::$action . 'Action')) {
+            $action_name = DEFAULT_ACTION . 'Action';
+        }
+
+        $controller->$action_name(self::createInputParams($route["DATA"]));
+    }
+
+    private static function cutRoute () {
+        if (strpos($_SERVER['REQUEST_URI'], "?")) {
             $request = explode('?', $_SERVER['REQUEST_URI']);
-            $uri = $request[0];
+            return ["URI" => $request[0], "DATA" => $request[1]];
+        } else {
+            $request = explode('/', $_SERVER['REQUEST_URI']);
 
-            self::getRoute($uri);
+            $last_element_position = count($request)-1;
 
-            $name = ucfirst(self::$controller).'Controller';
+            $data = $request[$last_element_position];
 
-            $controller_name = class_exists($name) ? $name  : ucfirst(DEFAULT_404) . 'Controller';
-            $action_name = self::$action . 'Action';
+            array_splice($request, $last_element_position, 1);
 
-            $controller = new $controller_name();
+            return ["URI" => implode($request, "/"), "DATA" => $data];
+        }
+    }
 
-            if (!method_exists($controller, self::$action . 'Action')) {
-                $action_name = DEFAULT_ACTION . 'Action';
-            }
-
-            $controller->$action_name(self::createInputParams($request[1]));
-     }
-
-     public static function createInputParams ($params) {
+    public static function createInputParams ($params) {
         $return_array = [];
         $params_array =  explode("&&", $params);
-        if (count($params_array) > 1) {
-            foreach (explode("&&", $params) as $value) {
+
+        if (count($params_array) > 1 || count(explode("=", $params)) > 1) {
+            foreach ($params_array as $value) {
                 $data = explode("=", $value);
                 $return_array[$data[0]] = $data[1];
             }
         } else {
-            return $params_array;
+            return $params;
         }
 
         return $return_array;
-     }
+    }
 
     /**
      * @return null

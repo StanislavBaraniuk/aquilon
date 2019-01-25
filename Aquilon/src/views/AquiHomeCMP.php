@@ -13,7 +13,7 @@
             <div class="col-md-2 col-lg-2 col-xl-2 col-sm-12">
                 <div class="row">
                     <div class="col-12">
-                        <img style="width: 150px; height: 150px; margin-left: calc(50% - 75px)" src="Aquilon/asset/AquLOGO640.svg?_ijt=g1hocs0n9e60vqo9nva51sd317" alt="">
+                        <img style="width: 150px; height: 150px; margin-left: calc(50% - 75px)" src="Aquilon/asset/AquLOGO640.svg" alt="">
                     </div>
                     <div class="col-12" style="text-align: center; color: #00d3bb">
                         <h3 style="letter-spacing: 2px">Aquilon<span style="font-size: 15px; "> v0.0.1</span></h3>
@@ -51,7 +51,7 @@
     }
 
     .introduce-block {
-        width: 100vw;
+        width: 90vw;
         height: 100vh;
         font-family: 'Poppins', sans-serif;
         padding-top: 40vh;

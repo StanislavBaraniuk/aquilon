@@ -7,7 +7,7 @@ function ClassesAutoloader($class_name) {
     $escape = false;
 
     foreach (get_included_files() as $item) {
-        $file = explode("DS", $item);
+        $file = explode(DS, $item);
         if ($class_name == $file[count($file)-1]) {
             $escape = true;
         }

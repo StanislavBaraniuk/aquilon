@@ -11,7 +11,7 @@ class Aquilon
 {
     static function start ()
     {
-        Access::_RUN_([DEFAULT_ACCESS_RULE]);
+        Access::_RUN_(explode(",",DEFAULT_ACCESS_RULE));
         Route::Start();
     }
 }
