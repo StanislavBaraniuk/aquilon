@@ -28,6 +28,7 @@ class Access
                 if (isset(self::$filters[$filter])) {
                     $filter_req = require self::$filters[$filter];
                     if (!$filter_req[0]) {
+                        http_response_code($filter_req[2]);
                         echo $filter_req[1];
                         exit(0);
                     }

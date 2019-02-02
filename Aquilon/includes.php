@@ -1,7 +1,7 @@
 <?php
 
 require_once 'config/constants.php';
-require_once 'src/core/modules/iLoader.php';
+require_once 'src/core/modules/auto_loading/iLoader.php';
 
 function ClassesAutoloader($class_name) {
     $escape = false;

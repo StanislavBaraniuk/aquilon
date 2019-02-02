@@ -102,24 +102,24 @@ class SQL extends DB
             $count++;
         }
 
-        if (count($params) < 1) return $sql;
-
         $sql .= " $additional;";
 
         return $sql;
     }
 
-    static public function SELECT(array $params, $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '')
+    static public function SELECT(array $params = [SQL_SELECT_GET_NAME => [], SQL_SELECT_WHERE_NAME => [], SQL_SELECT_EXCEPT_NAME => []], $DEFAULT_TF_INDEX = 0, $table_name = null, $additional = '')
     {
         $sql = "SELECT ";
         $count = 1;
 
-        foreach ($params[SQL_SELECT_GET_NAME] as $key => $item) {
-            $sql .= $item;
-            if ($count < count($params[SQL_SELECT_GET_NAME])) {
-                $sql .=', ';
+        foreach ($params[SQL_SELECT_GET_NAME] as $item) {
+            if (!array_search($item ,$params[SQL_SELECT_EXCEPT_NAME])) {
+                $sql .= $item;
+                if ($count < count($params[SQL_SELECT_GET_NAME])) {
+                    $sql .= ', ';
+                }
+                $count++;
             }
-            $count++;
         }
 
         if ($table_name !== null)

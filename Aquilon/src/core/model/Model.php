@@ -6,6 +6,6 @@
  * Time: 00:01
  */
 
-class Model extends DB
+abstract class Model extends DB
 {
 }

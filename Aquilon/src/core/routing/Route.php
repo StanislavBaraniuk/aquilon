@@ -20,13 +20,16 @@ class Route
      */
     public static function getBasePath()
     {
-        $base_path = substr(ROOT, strlen($_SERVER['DOCUMENT_ROOT']));
+//        $base_path = substr(ROOT, strlen($_SERVER['DOCUMENT_ROOT']));
+//        echo ROOT.'<br>';
+//        echo $_SERVER['DOCUMENT_ROOT'];
+//        if (DS !== '/') {
+//            $base_path = str_replace(DS,DS, $base_path);
+//        }
 
-        if (DS !== '/') {
-            $base_path = str_replace(DS,DS, $base_path);
-        }
+        $base_path =  explode('/',$_SERVER['DOCUMENT_ROOT']);
 
-        return $base_path;
+        return $_SERVER['DOCUMENT_ROOT'];
 
     }
 
@@ -35,8 +38,10 @@ class Route
      */
     protected static function getRoute($uri)
     {
-        $route = substr($uri, strlen(self::getBasePath()));
-        $route_array = explode('/', $route);
+
+//        $route = substr($uri, strlen(self::getBasePath()));
+
+        $route_array = explode('/', $uri);
 
         if ($route_array[0] === "") {
             array_shift($route_array);
@@ -56,9 +61,12 @@ class Route
     {
         $route = self::cutRoute();
 
+//        print_r($route);
         self::getRoute($route["URI"]);
 
         $name = ucfirst(self::$controller).'Controller';
+
+
 
         $controller_name = class_exists($name) ? $name  : ucfirst(DEFAULT_404) . 'Controller';
         $action_name = self::$action . 'Action';
@@ -69,10 +77,12 @@ class Route
             $action_name = DEFAULT_ACTION . 'Action';
         }
 
+
         $controller->$action_name(self::createInputParams($route["DATA"]));
     }
 
     private static function cutRoute () {
+
         if (strpos($_SERVER['REQUEST_URI'], "?")) {
             $request = explode('?', $_SERVER['REQUEST_URI']);
             return ["URI" => $request[0], "DATA" => $request[1]];
@@ -83,7 +93,7 @@ class Route
 
             $data = $request[$last_element_position];
 
-            array_splice($request, $last_element_position, 1);
+            unset($request[$last_element_position]);
 
             return ["URI" => implode($request, "/"), "DATA" => $data];
         }
